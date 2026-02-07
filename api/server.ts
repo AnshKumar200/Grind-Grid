@@ -8,22 +8,24 @@ dotenv.config();
 const PORT = process.env.PORT || '7878';
 
 const app = express()
+app.use(express.json())
 app.use(cors())
 
-app.get('/activity', async (req, res) => {
-    const { github, leetcode } = req.query;
+
+app.post('/activity', async (req, res) => {
+    const { github, leetcode } = req.body;
 
     try {
         const response: any = {};
         const promise = [];
 
-        if(github && typeof github === 'string') {
+        if(github) {
             promise.push(githubActivity(github).then((data) => {
-                response.gihub = data;
+                response.github = data;
             }))
         }
 
-        if(leetcode && typeof leetcode === 'string') {
+        if(leetcode) {
             promise.push(leetcodeActivity(leetcode).then((data) => {
                 response.leetcode = data;
             }))
