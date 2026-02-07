@@ -1,3 +1,5 @@
+// skyscrapers, small colorful pyramids, trees?, :w - a new comp
+
 import { useState } from "react";
 
 type DataActivity = {
@@ -8,6 +10,11 @@ type DataActivity = {
         leetcode?: number;
     };
 };
+
+function getColor(count: number) {
+    if(count == 0) return 'bg-red-100'
+    else return 'bg-black'
+}
 
 export default function ActivityPage() {
     const [leetcodeUN, setLeetcodeUN] = useState('');
@@ -59,7 +66,13 @@ export default function ActivityPage() {
                 entry.total += d.count;
             })
         }
-        setTimeline(Array.from(userData.values()))
+        const arr = Array.from(userData.values());
+        const firstWeek = new Date(arr[0].date).getDay()
+        const padded = [
+            ...Array(firstWeek).fill(null),
+            ...arr,
+        ]
+        setTimeline(padded)
     }
 
     return (
@@ -77,9 +90,13 @@ export default function ActivityPage() {
             </form>
 
             {timeline && (
-                <div>
-                    {timeline.map((item, key) => (
-                        <div>{item.total}</div>
+                <div className="grid grid-flow-col grid-rows-7 gap-5">
+                    {timeline.map((item, i) => (
+                        item ? (
+                            <div key={i} className={`size-4 ${getColor(item.total)}`} />
+                        ) : (
+                            <div key={i}  />
+                        )
                     ))}
                 </div>
             )}
