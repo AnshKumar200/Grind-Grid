@@ -59,12 +59,12 @@ function Brick({ color = "#22c55e", size = 30 }: BrickProps) {
     );
 }
 
-export default function Pyramid({ count }) {
+export default function Pyramid(count: number) {
     const height = getHeight(count)
     const STEP = 11;
     return (
         <div className="relative w-4 h-13">
-            {height === -1 ? (
+            {height === 1 ? (
                 <div className="absolute bottom-0">
                     <Brick color="#543b0e" />
                 </div>

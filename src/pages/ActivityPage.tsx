@@ -5,7 +5,6 @@
 import { useState } from "react";
 import testdata from '../data.json'
 import { SiGithub, SiLeetcode } from "react-icons/si";
-import Pyramid from "../components/Brick";
 
 type DataActivity = {
     date: string;
@@ -29,7 +28,7 @@ export default function ActivityPage() {
     const [githubUN, setGithubUN] = useState('');
     const [timeline, setTimeline] = useState<(DataActivity | null)[]>(testdata);
 
-    async function handleSubmit(e) {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const params = new URLSearchParams();
