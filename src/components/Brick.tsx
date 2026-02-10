@@ -20,6 +20,21 @@ function Brick({ color = "#22c55e", size = 30 }: BrickProps) {
             viewBox="0 0 22 18"
             className='select-none'
         >
+            <defs>
+                <pattern
+                    id="sideTex"
+                    patternUnits="userSpaceOnUse"
+                    width="6"
+                    height="6"
+                >
+                    <image
+                        href="/side_build.png"
+                        width="9"
+                        height="9"
+                        style={{ imageRendering: "pixelated" }}
+                    />
+                </pattern>
+            </defs>
             {/* top */}
             <polygon
                 points="12,2 22,8 12,14 2,8"
@@ -30,7 +45,7 @@ function Brick({ color = "#22c55e", size = 30 }: BrickProps) {
             {/* left */}
             <polygon
                 points="2,8 12,14 12,20 2,14"
-                fill={color}
+                fill='url(#sideTex)'
                 style={{ filter: "brightness(0.95)" }}
             />
 
@@ -40,7 +55,7 @@ function Brick({ color = "#22c55e", size = 30 }: BrickProps) {
                 fill={color}
                 style={{ filter: "brightness(0.8)" }}
             />
-        </svg>
+        </svg >
     );
 }
 

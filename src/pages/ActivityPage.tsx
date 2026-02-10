@@ -1,16 +1,27 @@
+// themes
+// size
 // skyscrapers, small colorful pyramids, trees?, :w - a new comp
 
 import { useState } from "react";
 import testdata from '../data.json'
+import { SiGithub, SiLeetcode } from "react-icons/si";
 import Pyramid from "../components/Brick";
 
 type DataActivity = {
     date: string;
     total: number;
     platforms: {
-        github?: number;
-        leetcode?: number;
+        github: number;
+        leetcode: number;
     };
+};
+
+function getColor(count: number) {
+    if (count === 0) return 'bg-[#f3e8ff]';
+    if (count < 3) return 'bg-[#d8b4fe]';
+    if (count < 6) return 'bg-[#c084fc]';
+    if (count < 10) return 'bg-[#9333ea]';
+    return 'bg-[#6b21a8]';
 };
 
 export default function ActivityPage() {
@@ -18,63 +29,21 @@ export default function ActivityPage() {
     const [githubUN, setGithubUN] = useState('');
     const [timeline, setTimeline] = useState<(DataActivity | null)[]>(testdata);
 
-    const today = new Date();
-    const oneYearAgo = new Date(today);
-    oneYearAgo.setFullYear(today.getFullYear() - 1);
-
-    const userData = new Map<string, DataActivity>();
-    for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
-        const key = d.toISOString().slice(0, 10);
-        userData.set(key, {
-            date: key,
-            total: 0,
-            platforms: {
-                github: 0,
-                leetcode: 0,
-            },
-        })
-    }
-
     async function handleSubmit(e) {
         e.preventDefault();
 
-        const res = await fetch('http://localhost:7878/activity', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ leetcode: leetcodeUN, github: githubUN })
-        })
+        const params = new URLSearchParams();
+        if (githubUN) params.append('github', githubUN)
+        if (leetcodeUN) params.append('leetcode', leetcodeUN)
 
+        const res = await fetch(`http://localhost:7878/activity?${params.toString()}`)
         const data = await res.json()
 
-        if (data.github) {
-            data.github.days.forEach(d => {
-                const entry = userData.get(d.date);
-                if (!entry) return;
-
-                entry.platforms.github = d.count;
-                entry.total += d.count;
-            })
-        }
-        if (data.leetcode) {
-            data.leetcode.days.forEach(d => {
-                const entry = userData.get(d.date);
-                if (!entry) return;
-
-                entry.platforms.leetcode = d.count;
-                entry.total += d.count;
-            })
-        }
-        const arr = Array.from(userData.values());
-        const firstWeek = new Date(arr[0].date).getDay()
-        const padded = [
-            ...Array(firstWeek).fill(null),
-            ...arr,
-        ]
-        setTimeline(padded)
+        setTimeline(data)
     }
 
     return (
-        <div>
+        <div className="flex flex-col items-center">
             <form onSubmit={handleSubmit}>
                 <label>
                     Leetcode:
@@ -88,15 +57,33 @@ export default function ActivityPage() {
             </form>
 
             {timeline && (
-                <div className="grid grid-flow-col grid-rows-7">
+                <div className="grid grid-flow-col grid-rows-7 w-fit gap-1 font-outfit font-medium">
                     {timeline.map((item, i) =>
                         item ? (
-                            <div key={i}>
-                                <Pyramid count={item.total} />
+                            <div className="group flex">
+                                <div key={i} className={`size-6 ${getColor(item.total)} border border-[#b794f4]/35 hover:scale-125 rounded-sm duration-200 ease-out`} />
+                                <div className="hidden group-hover:flex group-hover:flex-col absolute text-nowrap pointer-events-none bg-[#2a1f45] text-[#f5f3ff] text-sm p-1 rounded-sm justify-center translate-x-6 z-1">
+                                    <div>
+                                        {new Date(item.date).toLocaleDateString('en-GB', {
+                                            day: '2-digit',
+                                            month: 'short',
+                                            year: '2-digit',
+                                        })}
+                                    </div>
+                                    <div className="flex gap-1">
+                                        {item.platforms.github > 0 && <div className="flex gap-1 items-center ">
+                                            <SiGithub />: {item.platforms.github}
+                                        </div>}
+                                        {item.platforms.leetcode > 0 && <div className="flex gap-1 items-center ">
+                                            <SiLeetcode />: {item.platforms.leetcode}
+                                        </div>}
+                                    </div>
+                                </div>
+                                {/*   <Pyramid count={item.total} />*/}
                             </div>
                         ) : (
-                            <div key={i}>
-                                <Pyramid count={0} />
+                            <div key={i} className="size-6 border border-[#b794f4]/65 rounded-sm">
+                                {/*   <Pyramid count={0} />*/}
                             </div>
                         )
                     )}
