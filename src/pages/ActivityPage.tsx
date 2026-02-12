@@ -10,6 +10,7 @@ import emptydata from '../data.json'
 import { IoCopyOutline } from "react-icons/io5";
 import { Slide, toast, ToastContainer } from "react-toastify";
 import { FaRegCircleCheck } from "react-icons/fa6";
+import { BsActivity } from "react-icons/bs";
 
 export type DataActivity = {
     date: string;
@@ -20,6 +21,8 @@ export type DataActivity = {
         codeforces: number;
     };
 };
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function ActivityPage() {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -38,7 +41,7 @@ export default function ActivityPage() {
         if (leetcodeUN) params.append('leetcode', leetcodeUN)
         if (codeforcesUN) params.append('codeforces', codeforcesUN)
 
-        const res = await fetch(`http://localhost:7878/activity?${params.toString()}`)
+        const res = await fetch(`${BACKEND_URL}/activity?${params.toString()}`)
         const data = await res.json()
 
         setLoading(false)
@@ -64,7 +67,7 @@ export default function ActivityPage() {
         if (leetcodeUN) params.append("leetcode", leetcodeUN);
         if (codeforcesUN) params.append("codeforces", codeforcesUN);
 
-        const url = `http://localhost:7878/heatmap?${params.toString()}`;
+        const url = `${BsActivity}/heatmap?${params.toString()}`;
 
         try {
             await navigator.clipboard.writeText(url);

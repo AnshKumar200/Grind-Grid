@@ -15,14 +15,18 @@ Grind consistently. Track visually. Stay motivated.
 
 - For embeding the dashboard, you can use the following iframe code:
 ```
-<iframe src="" width="100%"></iframe>
+<iframe src="https://grindgrid-b.vercel.app/heatmap?leetcode=" width="100%"></iframe>
 ```
+Supported Platforms: 
+- GitHub: github=
+- LeetCode: leetcode=
+- Codeforces: codeforces=
 
 ## Setup & Run Locally
 
 ``` bash
-  git clone https://github.com/AnshKumar200/grind-grid.git
-  cd grind-grid
+  git clone https://github.com/AnshKumar200/Grind-Grid.git
+  cd Grind-Grid
   
  # Fontend
   npm install
