@@ -10,8 +10,6 @@ import emptydata from '../data.json'
 import { IoCopyOutline } from "react-icons/io5";
 import { Slide, toast, ToastContainer } from "react-toastify";
 import { FaRegCircleCheck } from "react-icons/fa6";
-import { BsActivity } from "react-icons/bs";
-import { backup } from "node:sqlite";
 
 export type DataActivity = {
     date: string;
