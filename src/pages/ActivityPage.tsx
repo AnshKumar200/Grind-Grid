@@ -90,26 +90,26 @@ export default function ActivityPage() {
         }
     }
     return (
-        <div className="flex flex-col items-center gap-5">
+        <div className="flex flex-col items-center gap-5 max-md:text-xl">
             <ToastContainer />
             <GridEffect blink={false} />
-            <form onSubmit={handleSubmit} className="z-1 flex gap-5 flex-wrap">
+            <form onSubmit={handleSubmit} className="z-1 flex flex-col xl:flex-row gap-5">
                 <label className="flex gap-2 items-center">
                     <SiLeetcode />
                     <div>Leetcode:</div>
-                    <input type="text" className="border-3 border-gray-400 rounded-lg focus:border-gray-700 p-1" value={leetcodeUN} onChange={(e) => setLeetcodeUN(e.target.value)} />
+                    <input type="text" className="border-3 border-gray-400 rounded-lg focus:border-gray-700 p-1 w-50" value={leetcodeUN} onChange={(e) => setLeetcodeUN(e.target.value)} />
                 </label>
                 <label className="flex gap-2 items-center">
                     <SiGithub />
                     <div>Github:</div>
-                    <input type="text" className="border-3 border-gray-400 rounded-lg focus:border-gray-700 p-1" value={githubUN} onChange={(e) => setGithubUN(e.target.value)} />
+                    <input type="text" className="border-3 border-gray-400 rounded-lg focus:border-gray-700 p-1 w-50" value={githubUN} onChange={(e) => setGithubUN(e.target.value)} />
                 </label>
                 <label className="flex gap-2 items-center">
                     <SiCodeforces />
                     <div>Codeforces:</div>
-                    <input type="text" className="border-3 border-gray-400 rounded-lg focus:border-gray-700 p-1" value={codeforcesUN} onChange={(e) => setCodeforcesUN(e.target.value)} />
+                    <input type="text" className="border-3 border-gray-400 rounded-lg focus:border-gray-700 p-1 w-50" value={codeforcesUN} onChange={(e) => setCodeforcesUN(e.target.value)} />
                 </label>
-                <button type="submit" className="p-2 bg-gray-300 rounded-xl text-2xl cursor-pointer">Go!</button>
+                <button type="submit" className="px-6 py-2 bg-gray-300 rounded-xl text-2xl cursor-pointer w-fit self-center">Go!</button>
             </form>
 
             {loading && (
@@ -118,11 +118,11 @@ export default function ActivityPage() {
 
             <ActivityGrid data={timeline} externalRef={canvasRef} />
 
-            <div className="z-1 flex gap-5">
-                <button className="p-2 bg-gray-300 rounded-xl text-2xl cursor-pointer" onClick={handleDownload}>Download as Image</button>
-                <button className="p-2 bg-gray-300 rounded-xl text-2xl cursor-pointer flex gap-2 items-center" onClick={handleCopy}>
+            <div className="z-1 flex gap-2 md:gap-5">
+                <button className="p-2 md:p-4 bg-gray-300 rounded-xl max-md:text-lg cursor-pointer" onClick={handleDownload}>Download as Image</button>
+                <button className="p-2 md:p-4 bg-gray-300 rounded-xl max-md:text-lg cursor-pointer flex gap-1 md:gap-2 items-center" onClick={handleCopy}>
                     <IoCopyOutline />
-                    <div>Copy Embebd Link</div>
+                    <div>Copy Embed Link</div>
                 </button>
             </div>
         </div>

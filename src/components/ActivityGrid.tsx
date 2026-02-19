@@ -23,6 +23,7 @@ interface TooltipState {
 }
 
 export default function ActivityGrid({ data, externalRef }: { data: (DataActivity | null)[], externalRef?: React.RefObject<HTMLCanvasElement | null> }) {
+    const scrollRef = useRef<HTMLDivElement | null>(null);
     const internalRef = useRef<HTMLCanvasElement | null>(null);
     const canvasRef = externalRef ?? internalRef;
     const [tooltip, setTooltip] = useState<TooltipState>({
@@ -77,7 +78,13 @@ export default function ActivityGrid({ data, externalRef }: { data: (DataActivit
                 ctx.strokeRect(x - offset, y - offset, CELL_SIZE + offset * 2, CELL_SIZE + offset * 2);
             }
         })
-    }, [data, hoveredIndex])
+    }, [data, hoveredIndex]);
+
+    useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
+        }
+    }, [data]);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
         const canvas = canvasRef.current;
@@ -100,8 +107,8 @@ export default function ActivityGrid({ data, externalRef }: { data: (DataActivit
                 setHoveredIndex(index);
                 setTooltip({
                     visible: true,
-                    x: e.clientX - rect.left,
-                    y: e.clientY - rect.top,
+                    x: e.clientX,
+                    y: e.clientY + 25,
                     data: data[index],
                 });
                 canvas.style.cursor = 'pointer';
@@ -120,16 +127,20 @@ export default function ActivityGrid({ data, externalRef }: { data: (DataActivit
     };
 
     return (
-        <div className="z-1 relative flex items-center justify-center">
-            <canvas
-                ref={canvasRef}
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseLeave}
-                className="border border-purple-300/30 rounded-lg"
-            />
+        <div className="z-1 relative w-full">
+            <div ref={scrollRef} className="overflow-x-auto w-full max-w-full flex justify-center">
+                <div className="relative inline-block">
+                    <canvas
+                        ref={canvasRef}
+                        onMouseMove={handleMouseMove}
+                        onMouseLeave={handleMouseLeave}
+                        className="border border-purple-300/30 rounded-lg"
+                    />
 
+                </div>
+            </div>
             {tooltip.visible && tooltip.data && (
-                <div className="absolute bg-[#2a1f45] text-[#f5f3ff] p-2 rounded-md pointer-events-none whitespace-nowrap shadow-lg text-base"
+                <div className="fixed z-50 bg-[#2a1f45] text-[#f5f3ff] p-2 rounded-md pointer-events-none whitespace-nowrap shadow-lg text-base"
                     style={{
                         left: `${tooltip.x + 20}px`,
                         top: `${tooltip.y - 40}px`,
@@ -154,8 +165,6 @@ export default function ActivityGrid({ data, externalRef }: { data: (DataActivit
                             <SiCodeforces />: {tooltip.data.platforms.codeforces}
                         </div>}
                     </div>
-
-
                 </div>
             )}
         </div>
