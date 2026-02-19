@@ -12,7 +12,7 @@ export default function HomePage() {
                     <div className="absolute -translate-y-7 left-0 max-md:hidden">
                         <CubeAni dir="lr" />
                     </div>
-                    <div className="text-7xl md:text-8xl">Grind Grid</div>
+                    <div className="text-6xl sm:text-7xl md:text-8xl">Grind Grid</div>
                     <div className="absolute translate-y-2 left-0 max-md:hidden">
                         <CubeAni dir="rl" />
                     </div>
@@ -24,8 +24,8 @@ export default function HomePage() {
                     </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                    <div className="text-4xl md:text-5xl">Your Coding Activity,</div>
-                    <div className="text-4xl md:text-5xl">Beautifully Visualized</div>
+                    <div className="text-3xl sm:text-4xl md:text-5xl">Your Coding Activity,</div>
+                    <div className="text-3xl sm:text-4xl md:text-5xl">Beautifully Visualized</div>
                 </div>
                 <Link to='activity' className="p-4 bg-gray-300 w-fit rounded-xl md:text-3xl flex gap-3 items-center text-2xl">
                     <div>Get your heatmap!</div>
